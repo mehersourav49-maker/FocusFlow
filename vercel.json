@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/health", "destination": "/api/health" },
+    { "source": "/generate-feedback", "destination": "/api/generate-feedback" },
+    { "source": "/study-chat", "destination": "/api/study-chat" }
+  ]
+}

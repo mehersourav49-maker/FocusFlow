@@ -4,6 +4,7 @@
   const isLocal = host === "localhost" || host === "127.0.0.1";
 
   window.APP_CONFIG = {
-    API_BASE: isLocal ? "http://localhost:5000" : "https://YOUR-BACKEND.onrender.com",
+    API_BASE: isLocal ? "http://localhost:5000" : "",
   };
 })();
+

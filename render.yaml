@@ -9,8 +9,9 @@ services:
       - key: OPENAI_API_KEY
         sync: false
 
-  - type: static
+  - type: web
     name: focusflow-web
+    runtime: static
     rootDir: .
     buildCommand: ""
-    publishPath: .
+    staticPublishPath: .

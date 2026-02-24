@@ -1,0 +1,22 @@
+{
+    "name":  "amd",
+    "version":  "1.0.0",
+    "description":  "",
+    "main":  "index.js",
+    "type":  "module",
+    "scripts":  {
+                    "start":  "node server.js",
+                    "test":  "echo \"Error: no test specified\" \u0026\u0026 exit 1"
+                },
+    "keywords":  [
+
+                 ],
+    "author":  "",
+    "license":  "ISC",
+    "dependencies":  {
+                         "cors":  "^2.8.6",
+                         "dotenv":  "^17.2.4",
+                         "express":  "^5.2.1",
+                         "openai":  "^6.21.0"
+                     }
+}

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: focusflow-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+
+  - type: static
+    name: focusflow-web
+    rootDir: .
+    buildCommand: ""
+    publishPath: .

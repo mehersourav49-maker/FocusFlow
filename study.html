@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Mode | FocusFlow</title>
+    <link rel="stylesheet" href="css/study.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <h2>Study Mode</h2>
+    <span id="timer">00:00</span>
+</header>
+<div id="dashboardContainer"></div>
+
+<script src="js/dashboard.js"></script>
+<script src="js/config.js"></script>
+<script src="js/loadDashboard.js"></script>
+
+<main class="container">
+    <div class="study-left">
+        <div class="camera-box">
+            <video id="video" autoplay muted></video>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="status-box panel">
+            <h3>Status</h3>
+            <p>Emotion: <span id="emotion">Analyzing...</span></p>
+            <p>Attention: <span id="attention">Analyzing...</span></p>
+        </div>
+
+        <div class="focus-dashboard panel">
+            <h3>Focus Score</h3>
+            <div class="progress">
+                <div id="focusBar" class="progress-fill"></div>
+            </div>
+            <span id="focusScore">100%</span>
+        </div>
+    </div>
+
+    <div class="chat-panel panel">
+        <h3>AI Study Coach</h3>
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input-box">
+            <input id="chatInput" type="text" placeholder="Ask your doubt...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</main>
+
+<footer class="controls">
+    <button onclick="stopSession()">End Session</button>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+<script src="js/study.js"></script>
+
+</body>
+</html>

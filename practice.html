@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Mode | FocusFlow</title>
+    <link rel="stylesheet" href="css/practice.css">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+</head>
+<body>
+
+<header class="top-bar">
+    <span class="title-text">Practice Mode | Interview and Presentation</span>
+</header>
+<div id="dashboardContainer"></div>
+
+<script src="js/dashboard.js"></script>
+<script src="js/config.js"></script>
+<script src="js/loadDashboard.js"></script>
+
+<main class="container">
+    <div>
+        <div class="camera-box">
+            <video id="video" autoplay muted></video>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="summary-box" id="summaryBox" style="display:none;">
+            <h3>Session Summary</h3>
+            <p id="summaryText"></p>
+        </div>
+    </div>
+
+    <div>
+        <div class="feedback-box panel">
+            <h3>Live Feedback</h3>
+            <p id="feedbackText">Align yourself with the camera</p>
+            <div class="confidence" id="confidenceLevel">Confidence: Medium</div>
+        </div>
+
+        <div class="dashboard-box panel">
+            <h3>Performance Score</h3>
+
+            <div class="score-item">
+                <label>Confidence</label>
+                <div class="progress">
+                    <div id="confidenceBar" class="progress-fill"></div>
+                </div>
+                <span id="confidenceScore">0%</span>
+            </div>
+
+            <div class="score-item">
+                <label>Eye Contact</label>
+                <div class="progress">
+                    <div id="eyeBar" class="progress-fill"></div>
+                </div>
+                <span id="eyeScore">0%</span>
+            </div>
+
+            <div class="score-item">
+                <label>Expression</label>
+                <div class="progress">
+                    <div id="expressionBar" class="progress-fill"></div>
+                </div>
+                <span id="expressionScore">0%</span>
+            </div>
+
+            <div class="score-item">
+                <label>Stability</label>
+                <div class="progress">
+                    <div id="stabilityBar" class="progress-fill"></div>
+                </div>
+                <span id="stabilityScore">0%</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="controls">
+    <button id="generateFeedbackBtn" onclick="generateSessionFeedback()">Generate AI Feedback</button>
+    <button id="endSessionBtn" onclick="endSession()" style="display:none; margin-top: 0.6rem;">End Session</button>
+</footer>
+
+<script defer src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<script src="js/practice.js"></script>
+
+</body>
+</html>

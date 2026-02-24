@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving Mode | FocusFlow</title>
+    <link rel="stylesheet" href="css/driving.css">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+</head>
+<body>
+
+<header class="top-bar">
+    <span class="title-text">Driving Mode | Safety Monitoring</span>
+</header>
+
+<div id="dashboardContainer"></div>
+<script src="js/dashboard.js"></script>
+<script src="js/config.js"></script>
+<script src="js/loadDashboard.js"></script>
+
+<main class="container">
+    <div class="camera-box">
+        <video id="video" autoplay muted></video>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="alert-box" id="alertBox">
+        <h2 id="alertText">Driver Alert</h2>
+    </div>
+</main>
+
+<footer class="controls">
+    <button onclick="stopSession()">End Driving</button>
+</footer>
+
+<script src="js/driving.js"></script>
+
+</body>
+</html>

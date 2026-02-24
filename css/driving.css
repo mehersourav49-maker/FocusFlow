@@ -1,0 +1,53 @@
+@import url("./theme.css");
+
+.container {
+    grid-template-columns: 1.9fr 1fr;
+}
+
+.alert-box {
+    padding: 1.1rem;
+    display: grid;
+    place-content: center;
+    text-align: center;
+}
+
+.alert-box h2 {
+    margin: 0;
+    font-family: "Sora", sans-serif;
+    font-size: 1.55rem;
+    letter-spacing: -0.02em;
+    color: #bfdbfe;
+}
+
+.alert-box.warning {
+    border-color: rgba(249, 115, 22, 0.6);
+    background: linear-gradient(150deg, rgba(124, 45, 18, 0.8), rgba(51, 65, 85, 0.88));
+    animation: pulseWarning 1.15s infinite;
+}
+
+footer button {
+    background: linear-gradient(120deg, #fb7185, #ef4444);
+    color: #fff1f2;
+}
+
+@keyframes pulseWarning {
+    0% {
+        box-shadow: 0 0 0 rgba(249, 115, 22, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(249, 115, 22, 0.14);
+    }
+    100% {
+        box-shadow: 0 0 0 rgba(249, 115, 22, 0.4);
+    }
+}
+
+@media (max-width: 960px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .alert-box h2 {
+        font-size: 1.3rem;
+    }
+}

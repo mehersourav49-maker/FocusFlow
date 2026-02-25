@@ -15,6 +15,14 @@ window.addEventListener("dashboardReady", () => {
 
 const timerDisplay = document.getElementById("timer");
 
+// Use lighter defaults for mobile devices to reduce lag.
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const TARGET_WIDTH = isMobile ? 320 : 640;
+const TARGET_HEIGHT = isMobile ? 240 : 480;
+const FACE_FRAME_SKIP = isMobile ? 1 : 0;
+const PHONE_DETECT_EVERY_MS = isMobile ? 1400 : 700;
+const DRAW_MESH_EVERY_N_FRAMES = isMobile ? 4 : 1;
+
 let sessionSeconds = 0;
 let sessionInterval = null;
 let lastBreakSuggestion = 0;
@@ -84,7 +92,13 @@ let distractionStreak = 0;
 // ================= Camera =================
 async function startCamera() {
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                width: { ideal: TARGET_WIDTH },
+                height: { ideal: TARGET_HEIGHT },
+                frameRate: { ideal: isMobile ? 24 : 30, max: isMobile ? 24 : 30 }
+            }
+        });
         video.srcObject = stream;
 
         video.onloadedmetadata = () => {
@@ -109,7 +123,7 @@ const faceMesh = new FaceMesh({
 
 faceMesh.setOptions({
     maxNumFaces: 1,
-    refineLandmarks: true,
+    refineLandmarks: !isMobile,
     minDetectionConfidence: 0.5,
     minTrackingConfidence: 0.5
 });
@@ -146,6 +160,10 @@ let lookingAwayFrames = 0;
 let yawnFrames = 0;
 let nodFrames = 0;
 let lastNoseY = null;
+let frameCounter = 0;
+let onFrameCounter = 0;
+let lastPhoneDetectAt = 0;
+let phoneDetectInFlight = false;
 
 // ================= Utils =================
 function distance(p1, p2) {
@@ -194,9 +212,7 @@ function smartIntervention() {
 
 // ================= Face Results =================
 faceMesh.onResults(results => {
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    frameCounter++;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (results.multiFaceLandmarks.length > 0) {
@@ -272,12 +288,14 @@ faceMesh.onResults(results => {
         updateFocusDisplay();
         emotionText.innerText = "Neutral";
 
-        drawConnectors(
-            ctx,
-            lm,
-            FACEMESH_TESSELATION,
-            { color: "#00FF00", lineWidth: 1 }
-        );
+        if (frameCounter % DRAW_MESH_EVERY_N_FRAMES === 0) {
+            drawConnectors(
+                ctx,
+                lm,
+                FACEMESH_TESSELATION,
+                { color: "#00FF00", lineWidth: 1 }
+            );
+        }
 
     } else {
 
@@ -294,22 +312,27 @@ faceMesh.onResults(results => {
 
 async function detectPhone() {
 
-    if (!objectModel) return;
+    if (!objectModel || phoneDetectInFlight) return;
+    phoneDetectInFlight = true;
 
-    const predictions = await objectModel.detect(video);
+    try {
+        const predictions = await objectModel.detect(video);
 
-    const phoneFound = predictions.some(
-        obj => obj.class === "cell phone" && obj.score > 0.6
-    );
+        const phoneFound = predictions.some(
+            obj => obj.class === "cell phone" && obj.score > 0.6
+        );
 
-    if (phoneFound) phoneDetectedFrames++;
-    else phoneDetectedFrames = 0;
+        if (phoneFound) phoneDetectedFrames++;
+        else phoneDetectedFrames = 0;
 
-    if (phoneDetectedFrames > PHONE_FRAMES) {
-        attentionText.innerText = "Phone Usage Detected";
-        focusScore = Math.max(0, focusScore - 1.5);
-        playAlert();
-        smartIntervention();
+        if (phoneDetectedFrames > PHONE_FRAMES) {
+            attentionText.innerText = "Phone Usage Detected";
+            focusScore = Math.max(0, focusScore - 1.5);
+            playAlert();
+            smartIntervention();
+        }
+    } finally {
+        phoneDetectInFlight = false;
     }
 }
 
@@ -337,12 +360,31 @@ function checkBreakSuggestion() {
 // ================= Camera Utils =================
 const camera = new Camera(video, {
 onFrame: async () => {
-    await faceMesh.send({ image: video });
-    detectPhone();
+    onFrameCounter++;
+
+    if (!video.videoWidth || !video.videoHeight) return;
+
+    // Keep canvas sizing stable; avoid per-frame width/height assignment.
+    if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+    }
+
+    // Optionally skip some FaceMesh frames on mobile.
+    if (FACE_FRAME_SKIP === 0 || onFrameCounter % (FACE_FRAME_SKIP + 1) === 0) {
+        await faceMesh.send({ image: video });
+    }
+
+    // Run object detection at a lower frequency because coco-ssd is expensive on phones.
+    const now = performance.now();
+    if (now - lastPhoneDetectAt >= PHONE_DETECT_EVERY_MS) {
+        lastPhoneDetectAt = now;
+        detectPhone();
+    }
 },
 
-    width: 640,
-    height: 480
+    width: TARGET_WIDTH,
+    height: TARGET_HEIGHT
 });
 camera.start();
 

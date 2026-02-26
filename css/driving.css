@@ -13,32 +13,46 @@
 
 .alert-box h2 {
     margin: 0;
-    font-family: "Sora", sans-serif;
-    font-size: 1.55rem;
-    letter-spacing: -0.02em;
-    color: #bfdbfe;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    color: #d7e1ff;
+    text-shadow: 0 0 18px rgba(108, 152, 255, 0.45);
 }
 
 .alert-box.warning {
-    border-color: rgba(249, 115, 22, 0.6);
-    background: linear-gradient(150deg, rgba(124, 45, 18, 0.8), rgba(51, 65, 85, 0.88));
-    animation: pulseWarning 1.15s infinite;
+    border-color: rgba(255, 167, 96, 0.72);
+    background: linear-gradient(155deg, rgba(95, 34, 12, 0.82), rgba(38, 18, 14, 0.95));
+    box-shadow:
+        inset 0 0 35px rgba(255, 131, 67, 0.13),
+        0 0 36px rgba(255, 127, 72, 0.45);
+    animation: pulseWarning 1.08s infinite;
 }
 
 footer button {
-    background: linear-gradient(120deg, #fb7185, #ef4444);
-    color: #fff1f2;
+    background: linear-gradient(120deg, #ff7b5a, #ffb55b);
+    box-shadow: 0 10px 28px rgba(255, 125, 71, 0.35);
+}
+
+footer button:hover {
+    box-shadow: 0 14px 30px rgba(255, 125, 71, 0.45);
 }
 
 @keyframes pulseWarning {
     0% {
-        box-shadow: 0 0 0 rgba(249, 115, 22, 0.4);
+        box-shadow:
+            inset 0 0 35px rgba(255, 131, 67, 0.13),
+            0 0 20px rgba(255, 127, 72, 0.3);
     }
     50% {
-        box-shadow: 0 0 0 6px rgba(249, 115, 22, 0.14);
+        box-shadow:
+            inset 0 0 42px rgba(255, 148, 92, 0.18),
+            0 0 40px rgba(255, 127, 72, 0.55);
     }
     100% {
-        box-shadow: 0 0 0 rgba(249, 115, 22, 0.4);
+        box-shadow:
+            inset 0 0 35px rgba(255, 131, 67, 0.13),
+            0 0 20px rgba(255, 127, 72, 0.3);
     }
 }
 
@@ -48,6 +62,6 @@ footer button {
     }
 
     .alert-box h2 {
-        font-size: 1.3rem;
+        font-size: 1.24rem;
     }
 }
